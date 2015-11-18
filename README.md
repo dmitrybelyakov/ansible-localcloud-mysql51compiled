@@ -7,7 +7,7 @@ Upon installation will provide functionality to manage users and remote access i
 Requirements
 ------------
 
-This role requires an Ubuntu Box. It was tested on 12 (precise) and 14 (trusty) LTS releases.
+This role requires an Ubuntu Box. It was tested on 12 (precise) LTS release.
 
 Dependencies
 ------------
