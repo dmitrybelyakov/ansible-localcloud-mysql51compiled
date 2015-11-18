@@ -1,0 +1,12 @@
+---
+- name: open mysql port
+  ufw: rule=allow port={{item}} proto=tcp
+  with_items: "{{firewall_open}}"
+
+- name: copy mysql config over
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf owner=mysql group=mysql mode=0644
+  notify: restart mysql
+
+- name: copy mysql service over
+  template: src=mysql.service.j2 dest=/etc/init.d/mysql mode=0755
+  notify: restart mysql

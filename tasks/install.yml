@@ -1,0 +1,53 @@
+---
+- name: install software required for compilation
+  apt: pkg={{item}} state=installed
+  with_items:
+    - build-essential
+    - libreadline-dev
+    - python-mysqldb
+#    - python-pip
+#    - python-dev
+#    - libncurses5
+#    - libncurses5-dev
+#    - libedit-dev
+#    - libssl-dev
+
+
+- name: create mysql group
+  group: name=mysql state=present
+
+- name: create mysql user
+  user: name=mysql group=mysql
+
+- name: get mysql source
+  get_url: url=http://downloads.mysql.com/archives/get/file/mysql-5.1.72.tar.gz dest=~/ mode=0440
+
+- name: extract sources
+  unarchive: src=~/mysql-5.1.72.tar.gz dest=~/ copy=no
+
+- name: configure mysql
+  shell: ./configure  '--prefix=/usr' '--exec-prefix=/usr' '--libexecdir=/usr/sbin' '--datadir=/usr/share' '--localstatedir=/var/lib/mysql' '--includedir=/usr/include' '--infodir=/usr/share/info' '--mandir=/usr/share/man' '--with-system-type=debian-linux-gnu' '--enable-shared' '--enable-static' '--enable-thread-safe-client' '--enable-assembler' '--enable-local-infile' '--with-fast-mutexes' '--with-big-tables' '--with-unix-socket-path=/var/run/mysqld/mysqld.sock' '--with-mysqld-user=mysql' '--with-libwrap' '--without-readline' '--with-ssl' '--without-docs' '--with-extra-charsets=all' '--with-plugins=max' '--with-embedded-server' '--with-embedded-privilege-control' chdir=~/mysql-5.1.72
+
+- name: make mysql
+  shell: make chdir=~/mysql-5.1.72
+
+- name: and install
+  shell: make install chdir=~/mysql-5.1.72
+
+- name: process configuration
+  include: configure.yml
+
+- name: install initial database
+  shell: /root/mysql-5.1.72/scripts/mysql_install_db --user=mysql
+  notify: restart mysql
+
+- name: cleanup sources
+  shell: rm -rf /root/mysql-5.1.72
+
+- name: cleanup source archive
+  file: path=/root/mysql-5.1.72.tar.gz state=absent
+
+
+
+
+

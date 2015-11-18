@@ -1,0 +1,17 @@
+---
+- name: get mysql existence stats
+  stat: path=/usr/bin/mysql follow=False
+  register: mysql
+
+- name: install mysql if required
+  include: install.yml
+  when: mysql.stat.exists == False
+
+- name: make sure mysql is started
+  service: name=mysql state=started enabled=yes
+
+- name: process configuration
+  include: configure.yml
+
+- name: user management
+  include: manage_users.yml

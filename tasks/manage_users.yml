@@ -1,0 +1,19 @@
+---
+- name: set root password
+  mysql_user: name=root password="{{ mysql_root_password }}" state=present priv=*.*:ALL,GRANT
+  when: mysql_root_password is defined or mysql_install.changed
+
+  # required to properly update root password
+- name: update password
+  template: src=client_options.j2 dest=~/.my.cnf owner=root group=root mode=0600
+  when: mysql_root_password is defined or mysql_install.changed
+
+- name: enable users
+  when: mysql_users is defined
+  with_dict: mysql_users
+  mysql_user:
+    name="{{item.key}}"
+    host="{{item.value.host}}"
+    password="{{item.value.password}}"
+    priv="{{item.value.privileges}}"
+    state=present
