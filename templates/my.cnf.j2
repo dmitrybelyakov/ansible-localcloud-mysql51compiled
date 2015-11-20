@@ -24,7 +24,6 @@ socket		= /var/run/mysqld/mysqld.sock
 
 # The MySQL server
 [mysqld]
-skip-log-bin
 skip-locking
 user        = mysql
 port		= {{ mysql_port }}
@@ -38,6 +37,9 @@ read_buffer_size = 256K
 read_rnd_buffer_size = 512K
 myisam_sort_buffer_size = 8M
 bind-address = {{ mysql_bind_address }}
+
+
+{% if not mysql_binary_log %}skip-log-bin{% endif %}
 
 # Don't listen on a TCP/IP port at all. This can be a security enhancement,
 # if all processes that need to connect to mysqld run on the same host.

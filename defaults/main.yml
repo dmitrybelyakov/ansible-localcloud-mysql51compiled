@@ -11,6 +11,7 @@ mysql_packages:
 mysql_bind_address: 127.0.0.1
 mysql_port: 3306
 firewall_open: []
+mysql_binary_log: True
 
 mysql_users: {}
 #  username:
