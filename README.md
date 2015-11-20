@@ -30,6 +30,8 @@ Role Variables
 
 `mysql_users` - optional. A dictionary of users and their connection credentials and privileges. Use this to create users as well as enable remote access. A simple user definition can look like this:
 
+`mysql_binary_log` - optional. Whether binary logging is enabled. Defaults to true, for production. Set to false to disable binary logging locally.
+
 ```yml
 mysql_users:
   username:
