@@ -37,7 +37,7 @@ read_buffer_size = 256K
 read_rnd_buffer_size = 512K
 myisam_sort_buffer_size = 8M
 bind-address = {{ mysql_bind_address }}
-
+skip_name_resolve
 
 {% if not mysql_binary_log %}skip-log-bin{% endif %}
 
