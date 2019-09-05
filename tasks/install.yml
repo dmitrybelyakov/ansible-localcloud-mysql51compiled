@@ -1,17 +1,18 @@
 ---
 - name: install software required for compilation
-  apt: pkg={{item}} state=installed
-  with_items:
-    - build-essential
-    - libreadline-dev
-    - python-mysqldb
-#    - python-pip
-#    - python-dev
-#    - libncurses5
-#    - libncurses5-dev
-#    - libedit-dev
-#    - libssl-dev
-
+  apt: 
+    state: present
+    pkg: [
+      'build-essential',
+      'libreadline-dev',
+      'python-mysqldb',
+      'python-pip',
+      'python-dev',
+      'libncurses5',
+      'libncurses5-dev',
+      'libedit-dev',
+      'libssl-dev'
+    ]
 
 - name: create mysql group
   group: name=mysql state=present
